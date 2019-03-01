@@ -48,11 +48,16 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
 add_library(Google::test STATIC IMPORTED GLOBAL)
 add_dependencies(Google::test project-google-test)
+
 set_target_properties(Google::test PROPERTIES
   INTERFACE_INCLUDE_DIRECTORIES ${CMAKE_CURRENT_BINARY_DIR}/include
-  INTERFACE_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT}
   IMPORTED_LOCATION ${CMAKE_CURRENT_BINARY_DIR}/lib/libgtest.a
   )
+
+if (${CMAKE_THREAD_LIBS_INIT})
+set_target_properties(Google::test PROPERTIES
+  INTERFACE_LINK_LIBRARIES ${CMAKE_THREAD_LIBS_INIT})
+endif()
 
 add_library(Google::benchmark STATIC IMPORTED GLOBAL)
 add_dependencies(Google::benchmark project-google-benchmark)
